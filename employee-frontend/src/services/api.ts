@@ -1,22 +1,22 @@
 ﻿// src/services/api.ts
-import type { AxiosRequestHeaders, InternalAxiosRequestConfig } from "axios";
 import axios from "axios";
 
+// ✅ Use environment variable
 const api = axios.create({
-  baseURL: "https://localhost:7121/api",
+  baseURL: import.meta.env.VITE_API_BASE_URL,
 });
 
-api.interceptors.request.use((config: InternalAxiosRequestConfig) => {
+// Attach JWT token automatically
+api.interceptors.request.use((config) => {
   const token = localStorage.getItem("token");
 
-
-  const headers = (config.headers as AxiosRequestHeaders) ?? ({} as AxiosRequestHeaders);
-
   if (token) {
-    headers["Authorization"] = `Bearer ${token}` as unknown as string;
+    config.headers = {
+      ...config.headers,
+      Authorization: `Bearer ${token}`,
+    };
   }
 
-  config.headers = headers;
   return config;
 });
 
