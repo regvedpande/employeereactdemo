@@ -20,7 +20,6 @@ export default function TableList() {
   const [showForm, setShowForm] = useState(false);
   const [editId, setEditId] = useState<number | null>(null);
 
-  // reload is used by delete and form-success to refresh list
   const reload = useCallback(async () => {
     try {
       const res = await api.get<Employee[]>("/employees");
@@ -31,8 +30,6 @@ export default function TableList() {
     }
   }, []);
 
-  // Initial fetch runs inside effect (inline async function) with a mounted guard.
-  // This avoids calling setState synchronously in effect and resolves the eslint rule.
   useEffect(() => {
     let mounted = true;
 
