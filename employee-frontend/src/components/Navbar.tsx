@@ -1,0 +1,45 @@
+import { useContext } from "react";
+import { useNavigate } from "react-router-dom";
+import { AuthContext } from "../context/AuthContext";
+
+const Navbar: React.FC = () => {
+  const auth = useContext(AuthContext);
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    // AuthContext.logout already redirects via window.location.href in your code.
+    // We'll call logout and then navigate as a safe fallback (no harm).
+    auth?.logout();
+    // If logout already changed location, this won't do anything bad.
+    navigate("/login");
+  };
+
+  return (
+    <nav className="bg-white border-b border-gray-100 shadow-sm">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="flex justify-between h-16">
+          <div className="flex items-center">
+            <div className="flex-shrink-0 flex items-center gap-2">
+              <div className="bg-indigo-600 text-white p-2.5 rounded-lg">
+                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
+                </svg>
+              </div>
+              <span className="font-bold text-xl text-gray-800">EMS Pro</span>
+            </div>
+          </div>
+          <div className="flex items-center">
+            <button
+              onClick={handleLogout}
+              className="px-4 py-2 border border-gray-200 text-sm font-medium rounded-lg text-gray-700 bg-gray-50 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-colors"
+            >
+              Sign out
+            </button>
+          </div>
+        </div>
+      </div>
+    </nav>
+  );
+};
+
+export default Navbar;
